@@ -19,12 +19,18 @@
             android:textSize="30dp"
             android:text="123,456,789 Mb"/>
         <TextView
-            android:id="@+id/counter_bps"
+            android:id="@+id/counter_income"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="123,456.78 bps"
             />
+        <Button
+            android:id="@+id/stopgame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="STOP"/>
     </LinearLayout>
 
     <FrameLayout

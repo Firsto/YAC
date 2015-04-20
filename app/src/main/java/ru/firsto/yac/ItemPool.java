@@ -48,4 +48,14 @@ public class ItemPool {
     public Item item(int id) {
         return mItems.get(id - 1);
     }
+
+    public boolean upItemLevel(int id, long res) {
+        boolean result = false;
+
+        if (item(id).getPrice() <= res) {
+            item(id).levelUp();
+            result = true;
+        }
+        return result;
+    }
 }

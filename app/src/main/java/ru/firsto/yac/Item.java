@@ -44,6 +44,7 @@ public class Item {
 
     public void levelUp() {
         this.level++;
+        recalculateStats();
     }
 
     public String getName() {
