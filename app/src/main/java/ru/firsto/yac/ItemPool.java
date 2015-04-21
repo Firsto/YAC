@@ -49,10 +49,11 @@ public class ItemPool {
         return mItems.get(id - 1);
     }
 
-    public boolean upItemLevel(int id, long res) {
+    public boolean upItemLevel(int id, Game game) {
         boolean result = false;
 
-        if (item(id).getPrice() <= res) {
+        if (item(id).getPrice() <= game.getResources()) {
+            game.addResources(-1 * (long) item(id).getPrice());
             item(id).levelUp();
             result = true;
         }

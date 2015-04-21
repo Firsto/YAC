@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import java.util.concurrent.TimeUnit;
 
+import ru.firsto.yac.Util.Notation;
+
 /**
  * Created by razor on 16.04.15.
  * Main Game Activity
@@ -43,10 +45,12 @@ public class GameActivity extends SingleFragmentActivity {
                 if (isGameStarted) {
                     isGameStarted = !isGameStarted;
                     gameTask.cancel(true);
+                    mStopButton.setText("START");
                 } else {
                     isGameStarted = !isGameStarted;
                     gameTask = new GameTask();
                     gameTask.execute();
+                    mStopButton.setText("STOP");
                 }
             }
         });
@@ -64,7 +68,7 @@ public class GameActivity extends SingleFragmentActivity {
             try {
                 while (isGameStarted) {
                     TimeUnit.MILLISECONDS.sleep(100);
-                    mGame.addResources(Math.round(mGame.getIncome()/10));
+                    mGame.addResources(Math.round(mGame.getIncome() / 10));
                     publishProgress();
                 }
             } catch (InterruptedException e) {
@@ -77,8 +81,8 @@ public class GameActivity extends SingleFragmentActivity {
         protected void onProgressUpdate(Void... values) {
             super.onProgressUpdate(values);
 //            mResourcesCounter.setText(String.valueOf(values[0]) + " b");
-            mResourcesCounter.setText(String.valueOf(mGame.getResources()) + " b");
-            mIncomeCounter.setText(String.valueOf(Math.round(mGame.getIncome())) + " bps");
+            mResourcesCounter.setText(Notation.get(mGame.getResources()));
+            mIncomeCounter.setText(Notation.get(Math.round(mGame.getIncome())) + " bps");
         }
 
         @Override

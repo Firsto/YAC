@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import ru.firsto.yac.Util.Notation;
+
 /**
  * Created by razor on 16.04.15.
  * Main Game Fragment
@@ -44,12 +46,12 @@ public class GameFragment extends ListFragment {
 //        Item selectedItem = (Item) mItemPool.item(position+1);
         Item selectedItem = getModel(position);
 
-        if (mItemPool.upItemLevel(position + 1, mGame.getResources())) {
+        if (mItemPool.upItemLevel(position + 1, mGame)) {
             ((ItemAdapter) getListAdapter()).notifyDataSetChanged();
 
         } else {
             Toast.makeText(getActivity(), "Недостаточно ресурсов для повышения уровня " + selectedItem.getName() + ". Осталось "
-                            + (selectedItem.getPrice() - mGame.getResources() + " b и " + selectedItem.getTime()),
+                            + Notation.get(selectedItem.getPrice() - mGame.getResources()) + " и " + selectedItem.getTime(mGame.getIncome()),
                     Toast.LENGTH_SHORT).show();
         }
 
@@ -90,8 +92,8 @@ public class GameFragment extends ListFragment {
             holder.imageView.setImageResource(android.R.drawable.ic_media_play);
             holder.nameView.setText(item.getName());
             holder.levelView.setText("Level: " + String.valueOf(item.getLevel()));
-            holder.bonusView.setText("Bonus: " + String.valueOf(Math.round(item.getBonus())));
-            holder.costView.setText("Cost: " + String.valueOf(Math.round(item.getPrice())));
+            holder.bonusView.setText("Bonus: " + Notation.get(Math.round(item.getBonus())));
+            holder.costView.setText("Cost: " + Notation.get(Math.round(item.getPrice())));
 
             return row;
         }

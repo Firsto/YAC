@@ -1,5 +1,7 @@
 package ru.firsto.yac;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Created by razor on 16.04.15.
  * Item
@@ -13,9 +15,8 @@ public class Item {
     private double price;
     private double bonus;
     private double cost;
-    private long time;
 
-    public Item() {
+    private Item() {
     }
 
     public Item(int id, String name, long base_cost, long base_bonus) {
@@ -67,7 +68,25 @@ public class Item {
         return cost;
     }
 
-    public long getTime() {
-        return time;
+    public String getTime(double bps) {
+        String remaining = "";
+
+        long time = (long) (getPrice() / bps) * 1000;
+
+        long days = TimeUnit.MILLISECONDS.toDays(time);
+        time -= TimeUnit.DAYS.toMillis(days);
+        long hours = TimeUnit.MILLISECONDS.toHours(time);
+        time -= TimeUnit.HOURS.toMillis(hours);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(time);
+        time -= TimeUnit.MINUTES.toMillis(minutes);
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(time);
+
+        remaining = remaining
+                + (days > 0 ? days + ":" : "")
+                + (hours > 0 ? hours + ":" : "")
+                + (minutes > 0 ? (minutes > 10 ? minutes : "0" + minutes) + ":" : "00:")
+                + (seconds > 0 ? (seconds > 10 ? seconds : "0" + seconds) : "00");
+
+        return remaining;
     }
 }
