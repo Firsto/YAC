@@ -83,6 +83,14 @@ public class GameActivity extends SingleFragmentActivity {
 //            mResourcesCounter.setText(String.valueOf(values[0]) + " b");
             mResourcesCounter.setText(Notation.get(mGame.getResources()));
             mIncomeCounter.setText(Notation.get(Math.round(mGame.getIncome())) + " bps");
+            m++;
+            if (m == 10) {
+                Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
+                if (f != null && f instanceof GameFragment) {
+                    ((GameFragment) f).updateList();
+                }
+                m = 0;
+            }
         }
 
         @Override

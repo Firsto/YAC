@@ -35,7 +35,7 @@
 
     <TextView
         android:id="@+id/item_level"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/item_left"
         android:height="30dp"
@@ -43,6 +43,20 @@
         android:text="LEVEL"
 
         />
+
+    <TextView
+        android:id="@+id/item_remaining"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/item_level"
+        android:gravity="right"
+        android:height="30dp"
+        android:padding="5dp"
+        android:text="REMAINING"
+
+        android:textStyle="italic"
+        android:textSize="10dp"
+        android:textColor="#ff7f7f7f"/>
 
     <TextView
         android:id="@+id/item_price"

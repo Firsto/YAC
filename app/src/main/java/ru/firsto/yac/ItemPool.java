@@ -44,6 +44,19 @@ public class ItemPool {
     public ArrayList<Item> allItems() {
         return mItems;
     }
+    public ArrayList<Item> availableItems() {
+//        ArrayList<Item> availableItems = (ArrayList<Item>) mItems.clone();
+        ArrayList<Item> availableItems = new ArrayList<Item>(mItems.size());
+        availableItems.add(mItems.get(0));
+
+        for (int i = 1; i < mItems.size(); i++) {
+            if (mItems.get(i-1).getLevel() >= 0) {
+                availableItems.add(mItems.get(i));
+            }
+        }
+
+        return availableItems;
+    }
 
     public Item item(int id) {
         return mItems.get(id - 1);
@@ -59,4 +72,10 @@ public class ItemPool {
         }
         return result;
     }
+//
+//    public void recalculateItemRemaining(double bps) {
+//        for (Item item : mItems) {
+//            item.getTime(bps);
+//        }
+//    }
 }

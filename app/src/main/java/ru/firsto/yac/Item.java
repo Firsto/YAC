@@ -68,10 +68,10 @@ public class Item {
         return cost;
     }
 
-    public String getTime(double bps) {
+    public String getTime(long res, double bps) {
         String remaining = "";
 
-        long time = (long) (getPrice() / bps) * 1000;
+        long time = (long) ((getPrice() - res) / bps) * 1000;
 
         long days = TimeUnit.MILLISECONDS.toDays(time);
         time -= TimeUnit.DAYS.toMillis(days);
@@ -82,10 +82,16 @@ public class Item {
         long seconds = TimeUnit.MILLISECONDS.toSeconds(time);
 
         remaining = remaining
-                + (days > 0 ? days + ":" : "")
+                + (days > 0 ? days + "d " : "")
                 + (hours > 0 ? hours + ":" : "")
-                + (minutes > 0 ? (minutes > 10 ? minutes : "0" + minutes) + ":" : "00:")
-                + (seconds > 0 ? (seconds > 10 ? seconds : "0" + seconds) : "00");
+                + (minutes > 0 ? (minutes >= 10 ? minutes : "0" + minutes) + ":" : "00:")
+                + (seconds > 0 ? (seconds >= 10 ? seconds : "0" + seconds) : "00");
+
+        if (remaining.equals("00:00") && getPrice() <= res) {
+            remaining = "READY";
+        } else {
+            remaining = "Remaining: " + remaining;
+        }
 
         return remaining;
     }

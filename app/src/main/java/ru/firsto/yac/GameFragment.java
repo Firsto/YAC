@@ -36,7 +36,8 @@ public class GameFragment extends ListFragment {
     public void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
 
-        setListAdapter(new ItemAdapter(mItemPool.allItems()));
+//        setListAdapter(new ItemAdapter(mItemPool.allItems()));
+        setListAdapter(new ItemAdapter(mItemPool.availableItems()));
     }
 
     @Override
@@ -47,14 +48,18 @@ public class GameFragment extends ListFragment {
         Item selectedItem = getModel(position);
 
         if (mItemPool.upItemLevel(position + 1, mGame)) {
-            ((ItemAdapter) getListAdapter()).notifyDataSetChanged();
+            updateList();
 
         } else {
             Toast.makeText(getActivity(), "Недостаточно ресурсов для повышения уровня " + selectedItem.getName() + ". Осталось "
-                            + Notation.get(selectedItem.getPrice() - mGame.getResources()) + " и " + selectedItem.getTime(mGame.getIncome()),
+                            + Notation.get(selectedItem.getPrice() - mGame.getResources()) + " и " + selectedItem.getTime(mGame.getResources(), mGame.getIncome()),
                     Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    protected void updateList() {
+        ((ItemAdapter) getListAdapter()).notifyDataSetChanged();
     }
 
     private Item getModel(int position) {
@@ -82,6 +87,7 @@ public class GameFragment extends ListFragment {
                 holder.levelView = (TextView) row.findViewById(R.id.item_level);
                 holder.bonusView = (TextView) row.findViewById(R.id.item_bonus);
                 holder.costView = (TextView) row.findViewById(R.id.item_price);
+                holder.remainingView = (TextView) row.findViewById(R.id.item_remaining);
                 row.setTag(holder);
             } else {
                 holder = (ViewHolder) row.getTag();
@@ -92,15 +98,16 @@ public class GameFragment extends ListFragment {
             holder.imageView.setImageResource(android.R.drawable.ic_media_play);
             holder.nameView.setText(item.getName());
             holder.levelView.setText("Level: " + String.valueOf(item.getLevel()));
-            holder.bonusView.setText("Bonus: " + Notation.get(Math.round(item.getBonus())));
+            holder.bonusView.setText("Bonus: " + Notation.get(item.getBonus()));
             holder.costView.setText("Cost: " + Notation.get(Math.round(item.getPrice())));
+            holder.remainingView.setText(item.getTime(mGame.getResources(), mGame.getIncome()));
 
             return row;
         }
 
         class ViewHolder {
             public ImageView imageView;
-            public TextView nameView, levelView, costView, bonusView;
+            public TextView nameView, levelView, costView, bonusView, remainingView;
         }
     }
 }
