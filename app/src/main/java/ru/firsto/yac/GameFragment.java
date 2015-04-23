@@ -48,6 +48,7 @@ public class GameFragment extends ListFragment {
         Item selectedItem = getModel(position);
 
         if (mItemPool.upItemLevel(position + 1, mGame)) {
+            mItemPool.availableItems();
             updateList();
 
         } else {

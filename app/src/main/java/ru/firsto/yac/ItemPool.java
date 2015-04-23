@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class ItemPool {
     private static ItemPool sItemPool;
     private ArrayList<Item> mItems = new ArrayList<>();
+    private ArrayList<Item> availableItems = new ArrayList<Item>(mItems.size());
 
     static String[] names = {
             "abacus",
@@ -46,7 +47,7 @@ public class ItemPool {
     }
     public ArrayList<Item> availableItems() {
 //        ArrayList<Item> availableItems = (ArrayList<Item>) mItems.clone();
-        ArrayList<Item> availableItems = new ArrayList<Item>(mItems.size());
+        availableItems.clear();
         availableItems.add(mItems.get(0));
 
         for (int i = 1; i < mItems.size(); i++) {
