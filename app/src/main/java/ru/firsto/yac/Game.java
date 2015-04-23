@@ -8,7 +8,7 @@ public class Game {
     private static Game sGame;
     private ItemPool mItemPool;
 
-    private long resources = 10;
+    private long resources = 1000L;
     private double income = 10.0;
     private long startgame = System.currentTimeMillis();
 

@@ -22,7 +22,7 @@ public class Notation {
         String s = "";
         int o = 1;
 
-        while ((value = (value / 1000)) > 1000) {
+        while ((value = (value / 1000)) >= 1000) {
             o++;
         }
 

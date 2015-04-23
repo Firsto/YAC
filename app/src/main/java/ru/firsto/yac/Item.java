@@ -57,7 +57,9 @@ public class Item {
     }
 
     public double getPrice() {
-        return price;
+//        return price;
+        if (getLevel() < 0) return price;
+        return getCost();
     }
 
     public double getBonus() {

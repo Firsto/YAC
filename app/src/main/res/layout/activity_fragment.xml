@@ -38,6 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_below="@id/counters"
+        android:layout_above="@+id/controls"
         android:background="#123456"/>
 
     <LinearLayout
