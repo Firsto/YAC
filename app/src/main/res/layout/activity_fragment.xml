@@ -50,16 +50,19 @@
         >
 
         <Button
+            android:id="@+id/progress_button"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Progress"/>
         <Button
+            android:id="@+id/shop_button"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Shop"/>
         <Button
+            android:id="@+id/stats_button"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"

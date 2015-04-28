@@ -1,8 +1,10 @@
 package ru.firsto.yac;
 
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -21,10 +23,15 @@ public class GameActivity extends SingleFragmentActivity {
     Game mGame;
 
     TextView mResourcesCounter, mIncomeCounter;
-    Button mStopButton;
+    Button mStopButton, mProgressButton, mShopButton, mStatsButton;
     GameTask gameTask;
     boolean isGameStarted = true;
+    boolean isShow;
     int m = 0;
+
+    FragmentTransaction ft;
+    GameFragment mGameFragment;
+    SurfaceFragment mSurfaceFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +40,9 @@ public class GameActivity extends SingleFragmentActivity {
         mResourcesCounter = (TextView) findViewById(R.id.counter_resourses);
         mIncomeCounter = (TextView) findViewById(R.id.counter_income);
         mStopButton = (Button) findViewById(R.id.stopgame);
+        mProgressButton = (Button) findViewById(R.id.progress_button);
+        mShopButton = (Button) findViewById(R.id.shop_button);
+        mStatsButton = (Button) findViewById(R.id.stats_button);
 
         mGame = Game.get();
 
@@ -54,11 +64,37 @@ public class GameActivity extends SingleFragmentActivity {
                 }
             }
         });
+
+        isShow = true;
+        mShopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ft = getSupportFragmentManager().beginTransaction();
+
+                    if (isShow) {
+//                        ft.hide(f);
+                        ft.replace(R.id.fragmentContainer, surfaceFragment());
+                        isShow = !isShow;
+                    } else {
+                        ft.replace(R.id.fragmentContainer, createFragment());
+//                        ft.show(f);
+                        isShow = !isShow;
+                    }
+
+                ft.commit();
+            }
+        });
+    }
+
+    protected Fragment surfaceFragment() {
+        mSurfaceFragment = new SurfaceFragment();
+        return mSurfaceFragment;
     }
 
     @Override
     protected Fragment createFragment() {
-        return new GameFragment();
+        mGameFragment = new GameFragment();
+        return mGameFragment;
     }
 
     class GameTask extends AsyncTask<Void,Void,Void> {
