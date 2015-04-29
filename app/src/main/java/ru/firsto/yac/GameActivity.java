@@ -87,13 +87,17 @@ public class GameActivity extends SingleFragmentActivity {
     }
 
     protected Fragment surfaceFragment() {
-        mSurfaceFragment = new SurfaceFragment();
+        if (mSurfaceFragment == null) {
+            mSurfaceFragment = new SurfaceFragment();
+        }
         return mSurfaceFragment;
     }
 
     @Override
     protected Fragment createFragment() {
-        mGameFragment = new GameFragment();
+        if (mGameFragment == null) {
+            mGameFragment = new GameFragment();
+        }
         return mGameFragment;
     }
 
