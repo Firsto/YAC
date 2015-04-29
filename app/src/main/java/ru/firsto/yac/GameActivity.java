@@ -70,17 +70,13 @@ public class GameActivity extends SingleFragmentActivity {
             @Override
             public void onClick(View v) {
                 ft = getSupportFragmentManager().beginTransaction();
-
-                    if (isShow) {
-//                        ft.hide(f);
-                        ft.replace(R.id.fragmentContainer, surfaceFragment());
-                        isShow = !isShow;
-                    } else {
-                        ft.replace(R.id.fragmentContainer, createFragment());
-//                        ft.show(f);
-                        isShow = !isShow;
-                    }
-
+                if (isShow) {
+                    ft.replace(R.id.fragmentContainer, surfaceFragment());
+                    isShow = !isShow;
+                } else {
+                    ft.replace(R.id.fragmentContainer, createFragment());
+                    isShow = !isShow;
+                }
                 ft.commit();
             }
         });

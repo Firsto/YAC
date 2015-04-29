@@ -19,7 +19,8 @@ public class SurfaceFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_surface, container, false);
 
-        mSurfaceView = (SurfaceView) view.findViewById(R.id.game_surface);
+//        mSurfaceView = (SurfaceView) view.findViewById(R.id.game_surface);
+
 
         return view;
 //        return inflater.inflate(R.layout.fragment_surface, null);
