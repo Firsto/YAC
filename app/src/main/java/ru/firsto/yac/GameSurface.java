@@ -47,7 +47,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
         setFocusable(true); // make sure we get key events
 
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(3);
+        paint.setStrokeWidth(2);
+        paint.setTextSize(18);
         paint.setColor(Color.WHITE);
 
         cx = 0;
@@ -93,11 +94,13 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
         canvas.drawARGB(10, 0, 0, 0);
 //        canvas.drawCircle(cx, cy, 3, paint);
 
-        canvas.drawText("+" + Notation.get(Math.round(Game.get().getIncome() / 10)), cx, cy, paint);
+        if (cx > 0 && cy > 0) {
 
+            canvas.drawText("+" + Notation.get(Math.round(Game.get().getIncome() / 10)), cx, cy, paint);
 
-        cx = -50;
-        cy = -50;
+//            cx = 0;
+//            cy = 0;
+        }
 
 
 //        cx += offx;
@@ -128,6 +131,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
 //            path.lineTo(event.getX(), event.getY());
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
 //            path.lineTo(event.getX(), event.getY());
+            cx = 0;
+            cy = 0;
         }
 
 //        if (path != null) {
