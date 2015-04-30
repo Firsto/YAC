@@ -13,7 +13,9 @@ import android.view.SurfaceHolder;
 public class GameSurfaceThread extends Thread {
     private SurfaceHolder mSurfaceHolder;
     private GameSurface mGameSurface;
-    private boolean myThreadRun = false;
+    private boolean running = false;
+    private boolean clicked = false;
+    private boolean scaled = false;
 
     private Bitmap picture;
     private Matrix matrix;
@@ -29,20 +31,27 @@ public class GameSurfaceThread extends Thread {
         // формируем матрицу преобразований для картинки
         matrix = new Matrix();
         matrix.postScale(3.0f, 3.0f);
-        matrix.postTranslate(100.0f, 100.0f);
 
         // сохраняем текущее время
         prevTime = System.currentTimeMillis();
     }
 
-    public void setRunning(boolean b) {
-        myThreadRun = b;
+    public void centerMatrix(int width, int height) {
+        matrix.postTranslate(width / 2, height / 2);
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
+
+    public void setClicked(boolean clicked) {
+        this.clicked = clicked;
     }
 
     @Override
     public void run() {
         // TODO Auto-generated method stub
-        while(myThreadRun){
+        while(running){
 
             // получаем текущее время и вычисляем разницу с предыдущим
             // сохраненным моментом времени
@@ -54,6 +63,17 @@ public class GameSurfaceThread extends Thread {
                 // точка вращения - центр картинки
                 prevTime = now;
                 matrix.preRotate(2.0f, picture.getWidth() / 2, picture.getHeight() / 2);
+
+                if (scaled) {
+                    matrix.preScale(0.5f, 0.5f, picture.getWidth() / 2, picture.getHeight() / 2);
+                    scaled = false;
+                }
+            }
+
+            if (clicked) {
+                matrix.preScale(2.0f, 2.0f, picture.getWidth() / 2, picture.getHeight() / 2);
+                clicked = false;
+                scaled = true;
             }
 
             Canvas c = null;

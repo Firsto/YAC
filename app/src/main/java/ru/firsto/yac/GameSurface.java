@@ -127,6 +127,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
             cx = (int) event.getX();
             cy = (int) event.getY();
             Game.get().addResources((long) (Game.get().getIncome() / 10));
+            thread.setClicked(true);
         } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
 //            path.lineTo(event.getX(), event.getY());
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
