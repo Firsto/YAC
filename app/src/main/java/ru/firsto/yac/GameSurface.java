@@ -10,6 +10,8 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import ru.firsto.yac.Util.Notation;
+
 /**
  * Created by razor on 29.04.15.
  * Game Surface
@@ -87,10 +89,15 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
     @Override
     protected void onDraw(Canvas canvas) {
         // TODO Auto-generated method stub
-        canvas.drawRGB(0, 0, 0);
+//        canvas.drawRGB(0, 0, 0);
+        canvas.drawARGB(10, 0, 0, 0);
 //        canvas.drawCircle(cx, cy, 3, paint);
 
-        canvas.drawText("TEXT", cx, cy, paint);
+        canvas.drawText("+" + Notation.get(Math.round(Game.get().getIncome() / 10)), cx, cy, paint);
+
+
+        cx = -50;
+        cy = -50;
 
 
 //        cx += offx;
@@ -112,21 +119,22 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            path = new Path();
-            path.moveTo(event.getX(), event.getY());
+//            path = new Path();
+//            path.moveTo(event.getX(), event.getY());
             cx = (int) event.getX();
             cy = (int) event.getY();
+            Game.get().addResources((long) (Game.get().getIncome() / 10));
         } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-            path.lineTo(event.getX(), event.getY());
+//            path.lineTo(event.getX(), event.getY());
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
-            path.lineTo(event.getX(), event.getY());
+//            path.lineTo(event.getX(), event.getY());
         }
 
-        if (path != null) {
-            Canvas canvas = surfaceHolder.lockCanvas();
-            canvas.drawPath(path, paint);
-            surfaceHolder.unlockCanvasAndPost(canvas);
-        }
+//        if (path != null) {
+//            Canvas canvas = surfaceHolder.lockCanvas();
+//            canvas.drawPath(path, paint);
+//            surfaceHolder.unlockCanvasAndPost(canvas);
+//        }
 
         return true;
     }
