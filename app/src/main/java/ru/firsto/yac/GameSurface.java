@@ -1,11 +1,13 @@
 package ru.firsto.yac;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -43,6 +45,10 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
     private void init(){
         getHolder().addCallback(this);
         thread = new GameSurfaceThread(getHolder(), this);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity) getContext()).getWindowManager()
+                .getDefaultDisplay().getMetrics(displayMetrics);
+        thread.centerMatrix(displayMetrics.widthPixels, displayMetrics.heightPixels);
 
         setFocusable(true); // make sure we get key events
 
@@ -68,7 +74,9 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
     public void surfaceCreated(SurfaceHolder holder) {
         // TODO Auto-generated method stub
         thread.setRunning(true);
-        thread.start();
+        if (thread.getState() == Thread.State.NEW) {
+            thread.start();
+        }
 
     }
 
@@ -85,35 +93,30 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
             catch (InterruptedException e) {
             }
         }
+//        Toast.makeText(getContext(), "surface destroyed", Toast.LENGTH_SHORT).show();
+//        thread.interrupt();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        // TODO Auto-generated method stub
 //        canvas.drawRGB(0, 0, 0);
         canvas.drawARGB(10, 0, 0, 0);
-//        canvas.drawCircle(cx, cy, 3, paint);
 
         if (cx > 0 && cy > 0) {
-
             canvas.drawText("+" + Notation.get(Math.round(Game.get().getIncome() / 10)), cx, cy, paint);
-
-//            cx = 0;
-//            cy = 0;
         }
+        m++;
+        if (m == 100) {
+            resetC();
+            m = 0;
+        }
+    }
 
+    int m = 0;
 
-//        cx += offx;
-//        if (cx > getWidth() || (cx < 0)){
-//            offx *= -1;
-//            cx += offx;
-//        }
-//
-//        cy += offy;
-//        if (cy > getHeight() || (cy < 0)){
-//            offy *= -1;
-//            cy += offy;
-//        }
+    public void resetC() {
+        cx = 0;
+        cy = 0;
     }
 
     Path path;
@@ -132,8 +135,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
 //            path.lineTo(event.getX(), event.getY());
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
 //            path.lineTo(event.getX(), event.getY());
-            cx = 0;
-            cy = 0;
+//            cx = 0;
+//            cy = 0;
         }
 
 //        if (path != null) {

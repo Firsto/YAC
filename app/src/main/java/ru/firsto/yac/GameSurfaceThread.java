@@ -20,6 +20,7 @@ public class GameSurfaceThread extends Thread {
     private Bitmap picture;
     private Matrix matrix;
     private long prevTime;
+    private int m = 10;
 
     public GameSurfaceThread(SurfaceHolder surfaceHolder, GameSurface surfaceView) {
         mSurfaceHolder = surfaceHolder;
@@ -37,7 +38,7 @@ public class GameSurfaceThread extends Thread {
     }
 
     public void centerMatrix(int width, int height) {
-        matrix.postTranslate(width / 2, height / 2);
+        matrix.postTranslate((width - picture.getWidth()*3) / 2, (height - picture.getHeight()*3 ) / 2);
     }
 
     public void setRunning(boolean running) {
@@ -69,11 +70,19 @@ public class GameSurfaceThread extends Thread {
                     scaled = false;
                 }
             }
-
+//          Если нажали - увеличиваем картинку на мгновение
             if (clicked) {
                 matrix.preScale(2.0f, 2.0f, picture.getWidth() / 2, picture.getHeight() / 2);
+//                mGameSurface.resetC();
                 clicked = false;
+//                scaled = true;
+                m = 0;
+            }
+            m++;
+            if (m == 3) {
+//                clicked = false;
                 scaled = true;
+//                m = 0;
             }
 
             Canvas c = null;

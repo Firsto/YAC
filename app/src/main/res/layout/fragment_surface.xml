@@ -12,6 +12,7 @@
               android:layout_height="fill_parent">
 
         <ru.firsto.yac.GameSurface
+            android:id="@+id/game_surface"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"/>
 

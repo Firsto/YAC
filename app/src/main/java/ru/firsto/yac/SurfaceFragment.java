@@ -16,10 +16,29 @@ public class SurfaceFragment extends Fragment {
     private SurfaceView mSurfaceView;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
+    @Override
+    public void onResume() {
+        mSurfaceView.setVisibility(View.VISIBLE);
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mSurfaceView.setVisibility(View.GONE);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_surface, container, false);
 
 //        mSurfaceView = (SurfaceView) view.findViewById(R.id.game_surface);
+        mSurfaceView = (SurfaceView) view.findViewById(R.id.game_surface);
 
 
         return view;
