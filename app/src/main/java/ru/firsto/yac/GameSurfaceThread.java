@@ -38,6 +38,8 @@ public class GameSurfaceThread extends Thread {
     }
 
     public void centerMatrix(int width, int height) {
+        matrix = new Matrix();
+        matrix.postScale(3.0f, 3.0f);
         matrix.postTranslate((width - picture.getWidth()*3) / 2, (height - picture.getHeight()*3 ) / 2);
     }
 

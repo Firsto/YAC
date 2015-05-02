@@ -26,31 +26,24 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
 
     public GameSurface(Context context) {
         super(context);
-        // TODO Auto-generated constructor stub
         init();
     }
 
     public GameSurface(Context context, AttributeSet attrs) {
         super(context, attrs);
-        // TODO Auto-generated constructor stub
         init();
     }
 
     public GameSurface(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        // TODO Auto-generated constructor stub
         init();
     }
 
     private void init(){
         getHolder().addCallback(this);
         thread = new GameSurfaceThread(getHolder(), this);
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        ((Activity) getContext()).getWindowManager()
-                .getDefaultDisplay().getMetrics(displayMetrics);
-        thread.centerMatrix(displayMetrics.widthPixels, displayMetrics.heightPixels);
 
-        setFocusable(true); // make sure we get key events
+        setFocusable(true); // для принятия событий нажатий
 
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(2);
@@ -67,7 +60,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
     @Override
     public void surfaceChanged(SurfaceHolder arg0, int arg1, int arg2, int arg3) {
         // TODO Auto-generated method stub
-
+//        Toast.makeText(getContext(), "surface changed", Toast.LENGTH_SHORT).show();
+        centerPic();
     }
 
     @Override
@@ -76,8 +70,13 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
         thread.setRunning(true);
         if (thread.getState() == Thread.State.NEW) {
             thread.start();
+        } else {
+            init();
+            thread.setRunning(true);
+            thread.start();
         }
 
+//        Toast.makeText(getContext(), "surfaceview : " + this, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -117,6 +116,13 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
     public void resetC() {
         cx = 0;
         cy = 0;
+    }
+
+    public void centerPic() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity) getContext()).getWindowManager()
+                .getDefaultDisplay().getMetrics(displayMetrics);
+        thread.centerMatrix(displayMetrics.widthPixels, displayMetrics.heightPixels);
     }
 
     Path path;

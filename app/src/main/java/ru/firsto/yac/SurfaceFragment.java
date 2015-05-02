@@ -22,18 +22,6 @@ public class SurfaceFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        mSurfaceView.setVisibility(View.VISIBLE);
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mSurfaceView.setVisibility(View.GONE);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_surface, container, false);
 
