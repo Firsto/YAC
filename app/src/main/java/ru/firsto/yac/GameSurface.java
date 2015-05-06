@@ -6,6 +6,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PointF;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
@@ -22,6 +24,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
 
     private GameSurfaceThread thread;
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private Paint mBoxPaint;
     int cx, cy, offx, offy;
 
     public GameSurface(Context context) {
@@ -49,6 +52,9 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
         paint.setStrokeWidth(2);
         paint.setTextSize(18);
         paint.setColor(Color.WHITE);
+
+        mBoxPaint = new Paint();
+        mBoxPaint.setColor(0x22005599);
 
         cx = 0;
         cy = 0;
@@ -108,6 +114,41 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
         if (m == 100) {
             resetC();
             m = 0;
+        }
+
+        canvas.drawRect(mBox.getRectF(), mBoxPaint);
+//        canvas.drawRect(mBox.getPoint().x, mBox.getPoint().y, mBox.getPoint().x+30, mBox.getPoint().y+30, mBoxPaint);
+        mBox.move();
+
+    }
+
+    Box mBox = new Box();
+
+    class Box {
+        private PointF point;
+        private RectF mRectF;
+        private int speed = 10;
+
+        Box () {
+            point = new PointF(10, 10);
+            mRectF = new RectF(getPoint().x, getPoint().y, getPoint().x+30, getPoint().y+30);
+        }
+
+        private void initRecT() {
+            mRectF.set(getPoint().x, getPoint().y, getPoint().x+30, getPoint().y+30);
+        }
+
+        public PointF getPoint() {
+            return point;
+        }
+
+        public RectF getRectF() {
+            return mRectF;
+        }
+
+        public void move() {
+            point.set(point.x, point.y + speed);
+            initRecT();
         }
     }
 
