@@ -7,6 +7,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
@@ -57,11 +59,16 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
         mBoxPaint = new Paint();
 //        mBoxPaint.setColor(0x22005599);
         mBoxPaint.setColor(Color.WHITE);
+//        mBoxPaint.setColor(Color.argb(10,0,255,255));
         mBoxErase = new Paint();
 //        mBoxErase.setColor(Color.argb(0, 0, 0, 0));
         mBoxErase.setColor(0x22005599);
 //        mBoxErase.setColor(0);
 //        mBoxErase.setColor(Color.BLACK);
+
+//        mBoxErase.setColor(getResources().getColor(android.R.color.transparent));
+//        mBoxErase.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+//        mBoxErase.setAntiAlias(true);
 
         cx = 0;
         cy = 0;
@@ -122,24 +129,62 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
             resetC();
             m = 0;
         }
+//        drawing.drawColor(Color.RED);
 
+        mBoxErase.setColorFilter(new PorterDuffColorFilter((Color.BLACK), PorterDuff.Mode.MULTIPLY));
         long now = System.currentTimeMillis();
         long elapsedTime = now - prevTime;
-        if (elapsedTime > 100) {
+        if (elapsedTime > 30) {
             prevTime = now;
-//            drawing.drawRect(mBox.getRectF(), mBoxErase);
-            canvas.drawRect(mBox.getRectF(), mBoxErase);
-            mBox.move();
+//            canvas.drawBitmap(boxbitmap, mBox.getPoint().x, mBox.getPoint().y, mBoxErase);
+//            drawing.drawBitmap(bmp, 0, 0, mBoxErase);
+
+            if (clear) {
+                canvas.drawBitmap(erasebitmap, mBox.getPoint().x, mBox.getPoint().y, mBoxErase);
+                clear = false;
+                mBox.move();
+                moved = true;
+            }
         }
-//        drawing.drawARGB(10,0,0,0);
-        canvas.drawRect(mBox.getRectF(), mBoxPaint);
 
+        if (moved) {
+            clear = false;
+            moved = false;
+            a = 0;
+        }
+        a++;
+        if (a == 3) {
+            clear = true;
+            drawing.drawColor(Color.RED);
+        }
+        if (a < 3) {
+            drawing.drawBitmap(boxbitmap, 0, 0, null);
+            canvas.drawBitmap(bmp, mBox.getPoint().x, mBox.getPoint().y, null);
+        }
+//        canvas.drawBitmap(bmp, mBox.getPoint().x, mBox.getPoint().y, null);
 
-        canvas.drawBitmap(bmp, 0, 0, null);
+        if (mBox.getPoint().y > getHeight()) {
+            mBox.setPoint(0);
+        }
 
     }
 
-    private long prevTime = System.currentTimeMillis();;
+    Bitmap erasebitmap = Bitmap.createBitmap(35, 40, Bitmap.Config.ARGB_8888);
+    boolean clear = false;
+    boolean moved = false;
+    int a = 0;
+
+    static class FadePainter {
+
+        public static Bitmap paint(int width, int height) {
+            Bitmap bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            Canvas drawing = new Canvas(bmp);
+
+            return bmp;
+        }
+    }
+
+    private long prevTime = System.currentTimeMillis();
 
     int m = 0;
 
@@ -148,15 +193,23 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
         cy = 0;
     }
     Canvas drawing;
-    Bitmap bmp;
+    Bitmap bmp, boxbitmap;
 
     public void centerPic() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((Activity) getContext()).getWindowManager()
                 .getDefaultDisplay().getMetrics(displayMetrics);
-        thread.centerMatrix(displayMetrics.widthPixels, displayMetrics.heightPixels);
-        bmp = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+//        thread.centerMatrix(displayMetrics.widthPixels, displayMetrics.heightPixels);
+        thread.centerMatrix(getWidth(), getHeight());
+        bmp = Bitmap.createBitmap(40, 40, Bitmap.Config.ARGB_8888);
+        boxbitmap = Bitmap.createBitmap(40, 40, Bitmap.Config.ARGB_8888);
+        drawing = new Canvas(boxbitmap);
+        drawing.drawRect(mBox.getRectF(), mBoxPaint);
         drawing = new Canvas(bmp);
+//        erasebitmap.eraseColor(Color.argb(10, 100, 100, 100));
+//        erasebitmap.eraseColor(0x10101010);
+//        erasebitmap.eraseColor(Color.YELLOW);
+        erasebitmap.eraseColor(Color.rgb(0,0,0));
     }
 
     Path path;

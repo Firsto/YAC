@@ -10,7 +10,7 @@ import android.graphics.RectF;
 public class Box {
     private PointF point;
     private RectF mRectF;
-    private int speed = 10;
+    private int speed = 50;
 
     Box () {
         point = new PointF(10, 10);
@@ -20,6 +20,10 @@ public class Box {
     public void setBox(PointF point, RectF rect) {
         this.point = point;
         this.mRectF = rect;
+    }
+
+    public void setPoint(int y) {
+        this.point.y = y;
     }
 
     private void initRecT() {

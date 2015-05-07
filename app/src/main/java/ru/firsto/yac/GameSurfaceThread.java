@@ -22,6 +22,9 @@ public class GameSurfaceThread extends Thread {
     private long prevTime;
     private int m = 10;
 
+    Canvas drawing;
+    Bitmap bmp;
+
     public GameSurfaceThread(SurfaceHolder surfaceHolder, GameSurface surfaceView) {
         mSurfaceHolder = surfaceHolder;
         mGameSurface = surfaceView;
@@ -95,7 +98,11 @@ public class GameSurfaceThread extends Thread {
                     mGameSurface.onDraw(c);
 
 //                    c.drawColor(Color.BLACK);
+//                    drawing.drawARGB(10, 0, 0, 0);
+//                    drawing.drawColor(Color.TRANSPARENT);
                     c.drawBitmap(picture, matrix, null);
+//                    drawing.drawBitmap(erasebitmap, width, height, null);
+//                    c.drawBitmap(bmp, 0, 0, null);
                 }
 //                sleep(1);
             } catch (Exception e) {
