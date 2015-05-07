@@ -2,12 +2,11 @@ package ru.firsto.yac;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PointF;
-import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
@@ -24,8 +23,10 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
 
     private GameSurfaceThread thread;
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private Paint mBoxPaint;
+    private Paint mBoxPaint, mBoxErase;
     int cx, cy, offx, offy;
+
+    Box mBox = new Box();
 
     public GameSurface(Context context) {
         super(context);
@@ -54,7 +55,13 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
         paint.setColor(Color.WHITE);
 
         mBoxPaint = new Paint();
-        mBoxPaint.setColor(0x22005599);
+//        mBoxPaint.setColor(0x22005599);
+        mBoxPaint.setColor(Color.WHITE);
+        mBoxErase = new Paint();
+//        mBoxErase.setColor(Color.argb(0, 0, 0, 0));
+        mBoxErase.setColor(0x22005599);
+//        mBoxErase.setColor(0);
+//        mBoxErase.setColor(Color.BLACK);
 
         cx = 0;
         cy = 0;
@@ -116,41 +123,23 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
             m = 0;
         }
 
+        long now = System.currentTimeMillis();
+        long elapsedTime = now - prevTime;
+        if (elapsedTime > 100) {
+            prevTime = now;
+//            drawing.drawRect(mBox.getRectF(), mBoxErase);
+            canvas.drawRect(mBox.getRectF(), mBoxErase);
+            mBox.move();
+        }
+//        drawing.drawARGB(10,0,0,0);
         canvas.drawRect(mBox.getRectF(), mBoxPaint);
-//        canvas.drawRect(mBox.getPoint().x, mBox.getPoint().y, mBox.getPoint().x+30, mBox.getPoint().y+30, mBoxPaint);
-        mBox.move();
+
+
+        canvas.drawBitmap(bmp, 0, 0, null);
 
     }
 
-    Box mBox = new Box();
-
-    class Box {
-        private PointF point;
-        private RectF mRectF;
-        private int speed = 10;
-
-        Box () {
-            point = new PointF(10, 10);
-            mRectF = new RectF(getPoint().x, getPoint().y, getPoint().x+30, getPoint().y+30);
-        }
-
-        private void initRecT() {
-            mRectF.set(getPoint().x, getPoint().y, getPoint().x+30, getPoint().y+30);
-        }
-
-        public PointF getPoint() {
-            return point;
-        }
-
-        public RectF getRectF() {
-            return mRectF;
-        }
-
-        public void move() {
-            point.set(point.x, point.y + speed);
-            initRecT();
-        }
-    }
+    private long prevTime = System.currentTimeMillis();;
 
     int m = 0;
 
@@ -158,12 +147,16 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
         cx = 0;
         cy = 0;
     }
+    Canvas drawing;
+    Bitmap bmp;
 
     public void centerPic() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((Activity) getContext()).getWindowManager()
                 .getDefaultDisplay().getMetrics(displayMetrics);
         thread.centerMatrix(displayMetrics.widthPixels, displayMetrics.heightPixels);
+        bmp = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+        drawing = new Canvas(bmp);
     }
 
     Path path;
