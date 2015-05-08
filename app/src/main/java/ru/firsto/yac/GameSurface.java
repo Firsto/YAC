@@ -143,6 +143,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
             if (clear) {
 //                canvas.drawBitmap(erasebitmap, mBox.getPoint().x, mBox.getPoint().y, mBoxErase);
 //                canvas.drawRect(mBox.getRectF(), mBoxErase);
+//                drawing.drawColor(Color.BLACK);
                 clear = false;
                 mBox.move();
                 moved = true;
@@ -158,7 +159,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
             drawed = true;
         }
         a++;
-        if (a == 3) {
+        if (a == 5) {
             clear = true;
 //            drawing.drawColor(Color.BLACK);
 //            canvas.drawRect(mBox.getRectF(), mBoxErase);
