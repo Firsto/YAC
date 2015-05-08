@@ -8,7 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
+import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
@@ -62,9 +62,10 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
 //        mBoxPaint.setColor(Color.argb(10,0,255,255));
         mBoxErase = new Paint();
 //        mBoxErase.setColor(Color.argb(0, 0, 0, 0));
-        mBoxErase.setColor(0x22005599);
+//        mBoxErase.setColor(0x22005599);
 //        mBoxErase.setColor(0);
 //        mBoxErase.setColor(Color.BLACK);
+        mBoxErase.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
 
 //        mBoxErase.setColor(getResources().getColor(android.R.color.transparent));
 //        mBoxErase.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
@@ -119,7 +120,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
     @Override
     protected void onDraw(Canvas canvas) {
 //        canvas.drawRGB(0, 0, 0);
-        canvas.drawARGB(10, 0, 0, 0);
+        canvas.drawARGB(64, 0, 0, 0);
 
         if (cx > 0 && cy > 0) {
             canvas.drawText("+" + Notation.get(Math.round(Game.get().getIncome() / 10)), cx, cy, paint);
@@ -131,37 +132,40 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
         }
 //        drawing.drawColor(Color.RED);
 
-        mBoxErase.setColorFilter(new PorterDuffColorFilter((Color.BLACK), PorterDuff.Mode.MULTIPLY));
+//        mBoxErase.setColorFilter(new PorterDuffColorFilter((Color.BLACK), PorterDuff.Mode.MULTIPLY));
         long now = System.currentTimeMillis();
         long elapsedTime = now - prevTime;
-        if (elapsedTime > 30) {
+        if (elapsedTime > 1) {
             prevTime = now;
 //            canvas.drawBitmap(boxbitmap, mBox.getPoint().x, mBox.getPoint().y, mBoxErase);
 //            drawing.drawBitmap(bmp, 0, 0, mBoxErase);
 
             if (clear) {
-                canvas.drawBitmap(erasebitmap, mBox.getPoint().x, mBox.getPoint().y, mBoxErase);
+//                canvas.drawBitmap(erasebitmap, mBox.getPoint().x, mBox.getPoint().y, mBoxErase);
+//                canvas.drawRect(mBox.getRectF(), mBoxErase);
                 clear = false;
                 mBox.move();
                 moved = true;
+                drawed = false;
             }
         }
 
-        if (moved) {
+        if (moved && !drawed) {
             clear = false;
             moved = false;
             a = 0;
+            drawing.drawBitmap(boxbitmap, 0, 0, null);
+            drawed = true;
         }
         a++;
         if (a == 3) {
             clear = true;
-            drawing.drawColor(Color.RED);
+//            drawing.drawColor(Color.BLACK);
+//            canvas.drawRect(mBox.getRectF(), mBoxErase);
+//            drawing.drawBitmap(erasebitmap, 0, 0, null);
         }
-        if (a < 3) {
-            drawing.drawBitmap(boxbitmap, 0, 0, null);
-            canvas.drawBitmap(bmp, mBox.getPoint().x, mBox.getPoint().y, null);
-        }
-//        canvas.drawBitmap(bmp, mBox.getPoint().x, mBox.getPoint().y, null);
+
+        canvas.drawBitmap(bmp, mBox.getPoint().x, mBox.getPoint().y, null);
 
         if (mBox.getPoint().y > getHeight()) {
             mBox.setPoint(0);
@@ -172,6 +176,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
     Bitmap erasebitmap = Bitmap.createBitmap(35, 40, Bitmap.Config.ARGB_8888);
     boolean clear = false;
     boolean moved = false;
+    boolean drawed = false;
     int a = 0;
 
     static class FadePainter {
@@ -209,7 +214,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
 //        erasebitmap.eraseColor(Color.argb(10, 100, 100, 100));
 //        erasebitmap.eraseColor(0x10101010);
 //        erasebitmap.eraseColor(Color.YELLOW);
-        erasebitmap.eraseColor(Color.rgb(0,0,0));
+        erasebitmap.eraseColor(Color.BLACK);
+//        erasebitmap.eraseColor(Color.argb(0,0,0,0));
     }
 
     Path path;
