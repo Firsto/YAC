@@ -162,7 +162,9 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
             if (!box.isClicked()) {
                 if (box.isClear()) {
                     box.setClear(false);
-                    drawing.drawColor(Color.BLACK);
+//                    drawing.drawColor(Color.BLACK);
+                    drawing.drawColor(Color.YELLOW);
+//                    drawing.drawColor(Color.argb(10,0,0,0));
                     canvas.drawBitmap(bmp, box.getPoint().x, box.getPoint().y, null);
                     box.move();
                 }
