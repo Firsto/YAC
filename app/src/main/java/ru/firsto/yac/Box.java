@@ -12,6 +12,7 @@ public class Box {
     private RectF mRectF;
     private int speed = 5;
     private boolean clear = false;
+    private boolean clicked = false;
     private long updatedAt;
 
     Box () {
@@ -74,5 +75,14 @@ public class Box {
     public void move() {
         point.set(point.x, point.y + speed);
         initRecT();
+    }
+
+    public boolean isClicked() {
+        return clicked;
+    }
+
+    public boolean click(int x, int y) {
+        if (mRectF.contains(x, y)) clicked = true;
+        return clicked;
     }
 }

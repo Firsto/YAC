@@ -158,30 +158,43 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
 //        }
 
         for (Box box : mBoxes) {
-            if (box.isClear()) {
-                box.setClear(false);
-                drawing.drawColor(Color.BLACK);
+
+            if (!box.isClicked()) {
+                if (box.isClear()) {
+                    box.setClear(false);
+                    drawing.drawColor(Color.BLACK);
+                    canvas.drawBitmap(bmp, box.getPoint().x, box.getPoint().y, null);
+                    box.move();
+                }
+
+                drawing.drawBitmap(boxbitmap, 0, 0, null);
                 canvas.drawBitmap(bmp, box.getPoint().x, box.getPoint().y, null);
-                box.move();
-            }
 
-            drawing.drawBitmap(boxbitmap, 0, 0, null);
-            canvas.drawBitmap(bmp, box.getPoint().x, box.getPoint().y, null);
-
-            long now = System.currentTimeMillis();
-            long elapsedTime = now - box.getUpdatedAt();
-            if (elapsedTime > 10) {
-                box.setClear(true);
-            }
-            if (box.getPoint().y > getHeight()) {
-                box.setPoint(0);
+                long now = System.currentTimeMillis();
+                long elapsedTime = now - box.getUpdatedAt();
+                if (elapsedTime > 10) {
+                    box.setClear(true);
+                }
+                if (box.getPoint().y > getHeight()) {
+                    box.setPoint(0);
+                }
+            } else {
+                drawing.drawBitmap(bigboxbitmap, 0, 0, null);
+                canvas.drawBitmap(bigboxbitmap, box.getPoint().x-30, box.getPoint().y-30, null);
+                canvas.drawBitmap(bigboxbitmap, box.getPoint().x-35, box.getPoint().y-35, null);
+                canvas.drawBitmap(bigboxbitmap, box.getPoint().x-40, box.getPoint().y-40, null);
+                canvas.drawBitmap(bigboxbitmap, box.getPoint().x-45, box.getPoint().y-45, null);
+                o++;
+                if (o == 5) {
+                    mBoxes.remove(mBoxes.indexOf(box));
+                    o = 0;
+                }
             }
         }
-
-
     }
 
     boolean clear = false;
+    int o = 0;
 
     static class FadePainter {
 
@@ -202,7 +215,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
         cy = 0;
     }
     Canvas drawing;
-    Bitmap bmp, boxbitmap;
+    Bitmap bmp, boxbitmap, bigboxbitmap;
 
     public void centerPic() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -211,6 +224,9 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
 //        thread.centerMatrix(displayMetrics.widthPixels, displayMetrics.heightPixels);
         thread.centerMatrix(getWidth(), getHeight());
         bmp = Bitmap.createBitmap(40, 40, Bitmap.Config.ARGB_8888);
+        bigboxbitmap = Bitmap.createBitmap(120, 120, Bitmap.Config.ARGB_8888);
+        drawing = new Canvas(bigboxbitmap);
+        drawing.drawRect(0, 0, 120, 120, mBoxPaint);
         boxbitmap = Bitmap.createBitmap(40, 40, Bitmap.Config.ARGB_8888);
         drawing = new Canvas(boxbitmap);
         drawing.drawRect(mBox.getRectF(), mBoxPaint);
@@ -229,6 +245,18 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
             cy = (int) event.getY();
             Game.get().addResources((long) (Game.get().getIncome() / 10));
             thread.setClicked(true);
+
+            for (Box box : mBoxes) {
+                if (box.click(cx, cy)) {
+//                    Toast.makeText(getContext(), "CLICKED AT: X = " + cx + " ; Y = " + cy
+//                            + "\nBox.LEFT = " + box.getRectF().left
+//                            + "\nBox.TOP = " + box.getRectF().top
+//                            + "\nBox.RIGHT = " + box.getRectF().right
+//                            + "\nBox.BOTTOM = " + box.getRectF().bottom, Toast.LENGTH_LONG).show();
+//                    mBoxes.remove(mBoxes.indexOf(box));
+                }
+            }
+
         } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
 //            path.lineTo(event.getX(), event.getY());
         } else if (event.getAction() == MotionEvent.ACTION_UP) {

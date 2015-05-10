@@ -6,6 +6,8 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.view.SurfaceHolder;
 
+import java.util.ArrayList;
+
 /**
  * Created by razor on 29.04.15.
  */
@@ -56,7 +58,6 @@ public class GameSurfaceThread extends Thread {
 
     @Override
     public void run() {
-        // TODO Auto-generated method stub
         while(running){
 
             // получаем текущее время и вычисляем разницу с предыдущим
@@ -106,7 +107,6 @@ public class GameSurfaceThread extends Thread {
                 }
 //                sleep(1);
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             finally{
