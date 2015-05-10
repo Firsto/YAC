@@ -29,9 +29,11 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Paint mBoxPaint, mBoxErase;
     int cx, cy, offx, offy;
+    int m = 0;
+    int o = 0;
 
     Box mBox = new Box();
-    ArrayList<Box> mBoxes = new ArrayList<>();
+    ArrayList<Box> mBoxes = BoxManager.get().boxes();
 
     public GameSurface(Context context) {
         super(context);
@@ -79,24 +81,22 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
         offx = 10;
         offy = 10;
 
-        for (int i = 0; i < 3; i++) {
-            Box box = new Box();
-            box.setPoint(i*30+50, 30);
-            box.setSpeed(i*2+5);
-            mBoxes.add(box);
-        }
+//        for (int i = 0; i < 5; i++) {
+//            Box box = new Box();
+//            box.setPoint(i*30+50, 30);
+//            box.setSpeed(i*2+5);
+//            mBoxes.add(box);
+//        }
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder arg0, int arg1, int arg2, int arg3) {
-        // TODO Auto-generated method stub
 //        Toast.makeText(getContext(), "surface changed", Toast.LENGTH_SHORT).show();
         centerPic();
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        // TODO Auto-generated method stub
         thread.setRunning(true);
         if (thread.getState() == Thread.State.NEW) {
             thread.start();
@@ -111,7 +111,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        // TODO Auto-generated method stub
         boolean retry = true;
         thread.setRunning(false);
         while (retry) {
@@ -178,7 +177,8 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
                     box.setClear(true);
                 }
                 if (box.getPoint().y > getHeight()) {
-                    box.setPoint(0);
+//                    box.setPoint(0);
+                    box.setClicked(true);
                 }
             } else {
                 drawing.drawBitmap(bigboxbitmap, 0, 0, null);
@@ -195,9 +195,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
         }
     }
 
-    boolean clear = false;
-    int o = 0;
-
     static class FadePainter {
 
         public static Bitmap paint(int width, int height) {
@@ -209,8 +206,6 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
     }
 
     private long prevTime = System.currentTimeMillis();
-
-    int m = 0;
 
     public void resetC() {
         cx = 0;
@@ -250,14 +245,18 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
 
             for (Box box : mBoxes) {
                 if (box.click(cx, cy)) {
+                    box.setClicked(true);
 //                    Toast.makeText(getContext(), "CLICKED AT: X = " + cx + " ; Y = " + cy
 //                            + "\nBox.LEFT = " + box.getRectF().left
 //                            + "\nBox.TOP = " + box.getRectF().top
 //                            + "\nBox.RIGHT = " + box.getRectF().right
 //                            + "\nBox.BOTTOM = " + box.getRectF().bottom, Toast.LENGTH_LONG).show();
 //                    mBoxes.remove(mBoxes.indexOf(box));
+                    Game.get().addResources(1000);
                 }
             }
+
+//            Toast.makeText(getContext(), "generated " + BoxManager.get().generateBox(), Toast.LENGTH_SHORT).show();
 
         } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
 //            path.lineTo(event.getX(), event.getY());

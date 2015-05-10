@@ -81,8 +81,11 @@ public class Box {
         return clicked;
     }
 
+    public void setClicked(boolean clicked) {
+        this.clicked = clicked;
+    }
+
     public boolean click(int x, int y) {
-        if (mRectF.contains(x, y)) clicked = true;
-        return clicked;
+        return mRectF.contains(x, y);
     }
 }
