@@ -32,6 +32,7 @@ public class GameActivity extends SingleFragmentActivity {
     FragmentTransaction ft;
     GameFragment mGameFragment;
     SurfaceFragment mSurfaceFragment;
+    AchievementGridFragment mAchievementGridFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +81,53 @@ public class GameActivity extends SingleFragmentActivity {
                 ft.commit();
             }
         });
+
+        mProgressButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ft = getSupportFragmentManager().beginTransaction();
+                if (isShow) {
+                    ft.replace(R.id.fragmentContainer, progressFragment());
+                    isShow = !isShow;
+                } else {
+                    ft.replace(R.id.fragmentContainer, createFragment());
+                    isShow = !isShow;
+                }
+                ft.commit();
+            }
+        });
+    }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        Toast.makeText(this,"onResume",Toast.LENGTH_SHORT).show();
+//    }
+//
+//    @Override
+//    public void onConfigurationChanged(Configuration newConfig) {
+//        super.onConfigurationChanged(newConfig);
+//        Toast.makeText(this,"onConfigurationChanged",Toast.LENGTH_SHORT).show();
+//    }
+//
+//    @Override
+//    protected void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Toast.makeText(this,"onDestroy",Toast.LENGTH_SHORT).show();
+        gameTask.cancel(true);
+    }
+
+    @Override
+    protected Fragment createFragment() {
+        if (mGameFragment == null) {
+            mGameFragment = new GameFragment();
+        }
+        return mGameFragment;
     }
 
     protected Fragment surfaceFragment() {
@@ -89,12 +137,11 @@ public class GameActivity extends SingleFragmentActivity {
         return mSurfaceFragment;
     }
 
-    @Override
-    protected Fragment createFragment() {
-        if (mGameFragment == null) {
-            mGameFragment = new GameFragment();
+    protected Fragment progressFragment() {
+        if (mAchievementGridFragment == null) {
+            mAchievementGridFragment = new AchievementGridFragment();
         }
-        return mGameFragment;
+        return mAchievementGridFragment;
     }
 
     class GameTask extends AsyncTask<Void,Void,Void> {

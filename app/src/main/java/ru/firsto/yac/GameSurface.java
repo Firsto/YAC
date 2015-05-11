@@ -14,6 +14,7 @@ import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -256,7 +257,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
                 }
             }
 
-//            Toast.makeText(getContext(), "generated " + BoxManager.get().generateBox(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "generated " + BoxManager.get().generateBox(), Toast.LENGTH_SHORT).show();
 
         } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
 //            path.lineTo(event.getX(), event.getY());

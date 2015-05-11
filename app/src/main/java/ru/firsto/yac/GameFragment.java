@@ -35,10 +35,15 @@ public class GameFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
-        setRetainInstance(true);
-
 //        setListAdapter(new ItemAdapter(mItemPool.allItems()));
         setListAdapter(new ItemAdapter(mItemPool.availableItems()));
+        setRetainInstance(true);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateList();
     }
 
     @Override
