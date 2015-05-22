@@ -10,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -22,7 +21,7 @@ public class AchievementGridFragment extends Fragment {
     GridView mGridView;
 
     AchievementGridAdapter mAdapter;
-    ArrayList<Achievement> mAchievements = new ArrayList<Achievement>();
+    ArrayList<Achievement> mAchievements = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,6 +34,14 @@ public class AchievementGridFragment extends Fragment {
             mAchievements.add(new Achievement("Third", "Third description"));
             mAchievements.add(new Achievement("Fourth", "Fourth description"));
             mAchievements.add(new Achievement("Fifth", "Fifth description"));
+            mAchievements.add(new Achievement("Sixth", "Sixth description"));
+            mAchievements.add(new Achievement("Seventh", "Seventh description"));
+            mAchievements.add(new Achievement("Eighth", "Eighth description"));
+            mAchievements.add(new Achievement("Ninth", "Ninth description"));
+            mAchievements.add(new Achievement("Tenth", "Tenth description"));
+            mAchievements.add(new Achievement("Eleventh", "Eleventh description"));
+            mAchievements.add(new Achievement("Twelfth", "Twelfth description"));
+            mAchievements.add(new Achievement("Thirteenth", "Thirteenth description"));
         }
     }
 
@@ -47,10 +54,14 @@ public class AchievementGridFragment extends Fragment {
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Achievement item = mAchievements.get(position);
-                Toast.makeText(getActivity(), "clicked " + item.getTitle(), Toast.LENGTH_SHORT).show();
+                Achievement achievement = mAchievements.get(position);
+                AchievementFragment achievementFragment = new AchievementFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("title", achievement.getTitle());
+                bundle.putString("description", achievement.getDescription());
+                achievementFragment.setArguments(bundle);
 
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.achievement_container, new GameFragment()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.achievement_container, achievementFragment).commit();
 
 //                Uri photoPageUri = Uri.parse(item.getPhotoPageUrl());
 ////                Intent intent = new Intent(Intent.ACTION_VIEW, photoPageUri);

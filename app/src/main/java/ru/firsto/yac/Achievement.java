@@ -17,7 +17,7 @@ public class Achievement {
         return mTitle;
     }
 
-    public String toString() {
+    public String getDescription() {
         return mDescription;
     }
 }
