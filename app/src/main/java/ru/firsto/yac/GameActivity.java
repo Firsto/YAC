@@ -26,11 +26,10 @@ public class GameActivity extends SingleFragmentActivity {
     Button mStopButton, mProgressButton, mShopButton, mStatsButton;
     GameTask gameTask;
     boolean isGameStarted = true;
-    boolean isShow;
     int m = 0;
 
     FragmentTransaction ft;
-    GameFragment mGameFragment;
+    ShopFragment mShopFragment;
     SurfaceFragment mSurfaceFragment;
     AchievementGridFragment mAchievementGridFragment;
     StatisticsFragment mStatisticsFragment;
@@ -55,11 +54,11 @@ public class GameActivity extends SingleFragmentActivity {
             @Override
             public void onClick(View v) {
                 if (isGameStarted) {
-                    isGameStarted = !isGameStarted;
+                    isGameStarted = false;
                     gameTask.cancel(true);
                     mStopButton.setText("START");
                 } else {
-                    isGameStarted = !isGameStarted;
+                    isGameStarted = true;
                     gameTask = new GameTask();
                     gameTask.execute();
                     mStopButton.setText("STOP");
@@ -67,18 +66,16 @@ public class GameActivity extends SingleFragmentActivity {
             }
         });
 
-        isShow = true;
         mShopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ft = getSupportFragmentManager().beginTransaction();
-                if (isShow) {
-                    ft.replace(R.id.fragmentContainer, surfaceFragment());
-                    isShow = !isShow;
+                if (mShopFragment == null || !mShopFragment.isVisible()) {
+                    ft.replace(R.id.fragmentContainer, shopFragment());
                 } else {
                     ft.replace(R.id.fragmentContainer, createFragment());
-                    isShow = !isShow;
                 }
+
                 ft.commit();
             }
         });
@@ -87,12 +84,10 @@ public class GameActivity extends SingleFragmentActivity {
             @Override
             public void onClick(View view) {
                 ft = getSupportFragmentManager().beginTransaction();
-                if (isShow) {
+                if (mAchievementGridFragment == null || !mAchievementGridFragment.isVisible()) {
                     ft.replace(R.id.fragmentContainer, progressFragment());
-                    isShow = !isShow;
                 } else {
                     ft.replace(R.id.fragmentContainer, createFragment());
-                    isShow = !isShow;
                 }
                 ft.commit();
             }
@@ -102,12 +97,10 @@ public class GameActivity extends SingleFragmentActivity {
             @Override
             public void onClick(View view) {
                 ft = getSupportFragmentManager().beginTransaction();
-                if (isShow) {
+                if (mStatisticsFragment == null || !mStatisticsFragment.isVisible()) {
                     ft.replace(R.id.fragmentContainer, statisticsFragment());
-                    isShow = !isShow;
                 } else {
                     ft.replace(R.id.fragmentContainer, createFragment());
-                    isShow = !isShow;
                 }
                 ft.commit();
             }
@@ -141,10 +134,14 @@ public class GameActivity extends SingleFragmentActivity {
 
     @Override
     protected Fragment createFragment() {
-        if (mGameFragment == null) {
-            mGameFragment = new GameFragment();
+        return surfaceFragment();
+    }
+
+    protected Fragment shopFragment() {
+        if (mShopFragment == null) {
+            mShopFragment = new ShopFragment();
         }
-        return mGameFragment;
+        return mShopFragment;
     }
 
     protected Fragment surfaceFragment() {
@@ -193,8 +190,8 @@ public class GameActivity extends SingleFragmentActivity {
             m++;
             if (m == 10) {
                 Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
-                if (f != null && f instanceof GameFragment) {
-                    ((GameFragment) f).updateList();
+                if (f != null && f instanceof ShopFragment) {
+                    ((ShopFragment) f).updateList();
                 }
                 m = 0;
             }

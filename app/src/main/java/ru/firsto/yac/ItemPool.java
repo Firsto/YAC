@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class ItemPool {
     private static ItemPool sItemPool;
     private ArrayList<Item> mItems = new ArrayList<>();
-    private ArrayList<Item> availableItems = new ArrayList<Item>(mItems.size());
+    private ArrayList<Item> availableItems = new ArrayList<>(mItems.size());
 
     static String[] names = {
             "abacus",
@@ -72,6 +72,21 @@ public class ItemPool {
             result = true;
         }
         return result;
+    }
+
+    public int[] getLevels() {
+        int[] levels = new int[mItems.size()];
+        for (int i = 1; i <= mItems.size(); i++) {
+            levels[i-1] = item(i).getLevel();
+        }
+        return levels;
+    }
+    public void initItems(int[] levels) {
+        for (int i = 1; i <= levels.length; i++) {
+            for (int j = 0; j < levels[i-1]; j++) {
+                item(i).levelUp();
+            }
+        }
     }
 //
 //    public void recalculateItemRemaining(double bps) {

@@ -1,5 +1,7 @@
 package ru.firsto.yac;
 
+import java.util.HashMap;
+
 /**
  * Created by razor on 20.04.15.
  * Game
@@ -43,5 +45,12 @@ public class Game {
 
     public long getGametime() {
         return System.currentTimeMillis() - startgame;
+    }
+
+    public void loadGame(long resources, long startgame, int[] levels, HashMap<String, String> stats) {
+        this.resources = resources;
+        this.startgame = startgame;
+        mItemPool.initItems(levels);
+        Statistics.get().loadStatistics(stats);
     }
 }

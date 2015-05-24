@@ -19,8 +19,8 @@ import ru.firsto.yac.Util.Notation;
  * Created by razor on 16.04.15.
  * Main Game Fragment
  */
-public class GameFragment extends ListFragment {
-    public static final String TAG = "GameFragment";
+public class ShopFragment extends ListFragment {
+    public static final String TAG = "ShopFragment";
 
     private ItemPool mItemPool = ItemPool.get();
     private Game mGame = Game.get();

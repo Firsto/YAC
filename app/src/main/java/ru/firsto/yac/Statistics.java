@@ -52,6 +52,14 @@ public class Statistics {
         return stats;
     }
 
+    public void loadStatistics(HashMap<String, String> stats) {
+//        gametime = Long.parseLong(stats.get(STATS_GAMETIME));
+        clicks = Integer.parseInt(stats.get(STATS_CLICKS));
+        boxesGenerated = Integer.parseInt(stats.get(STATS_BOXES_GENERATED));
+        boxesCaught = Integer.parseInt(stats.get(STATS_BOXES_CAUGHT));
+        init();
+    }
+
     public void click() {
         clicks++;
     }
