@@ -9,12 +9,12 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -119,7 +119,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
                 thread.join();
                 retry = false;
             }
-            catch (InterruptedException e) {
+            catch (InterruptedException ignored) {
             }
         }
 //        Toast.makeText(getContext(), "surface destroyed", Toast.LENGTH_SHORT).show();
@@ -235,13 +235,14 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
     SurfaceHolder surfaceHolder = getHolder();
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    public boolean onTouchEvent(@NonNull MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
 //            path = new Path();
 //            path.moveTo(event.getX(), event.getY());
             cx = (int) event.getX();
             cy = (int) event.getY();
             Game.get().addResources((long) (Game.get().getIncome() / 10));
+            Statistics.get().click();
             thread.setClicked(true);
 
             for (Box box : mBoxes) {
@@ -254,18 +255,22 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback{
 //                            + "\nBox.BOTTOM = " + box.getRectF().bottom, Toast.LENGTH_LONG).show();
 //                    mBoxes.remove(mBoxes.indexOf(box));
                     Game.get().addResources(1000);
+                    Statistics.get().boxCaught();
                 }
             }
 
-            Toast.makeText(getContext(), "generated " + BoxManager.get().generateBox(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(), "generated " + BoxManager.get().generateBox(), Toast.LENGTH_SHORT).show();
+            BoxManager.get().generateBox();
 
-        } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-//            path.lineTo(event.getX(), event.getY());
-        } else if (event.getAction() == MotionEvent.ACTION_UP) {
-//            path.lineTo(event.getX(), event.getY());
-//            cx = 0;
-//            cy = 0;
         }
+
+//        else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+////            path.lineTo(event.getX(), event.getY());
+//        } else if (event.getAction() == MotionEvent.ACTION_UP) {
+////            path.lineTo(event.getX(), event.getY());
+////            cx = 0;
+////            cy = 0;
+//        }
 
 //        if (path != null) {
 //            Canvas canvas = surfaceHolder.lockCanvas();

@@ -9,13 +9,13 @@ import java.util.Random;
  */
 public class BoxManager {
     private static BoxManager sBoxManager;
-    private ArrayList<Box> mBoxes = new ArrayList<Box>();
+    private ArrayList<Box> mBoxes = new ArrayList<>();
     private int count = 0;
 
     Random random = new Random(System.currentTimeMillis());
 
     private BoxManager() {
-        mBoxes = new ArrayList<Box>();
+        mBoxes = new ArrayList<>();
     }
 
     public static BoxManager get() {
@@ -33,8 +33,9 @@ public class BoxManager {
         if (count < 3) {
             Box box = new Box();
             box.setPoint(random.nextInt(10) * 30 + random.nextInt(10)*50, 30);
-            box.setSpeed(random.nextInt(10)*2+5);
+            box.setSpeed(random.nextInt(10) * 2 + 5);
             mBoxes.add(box);
+            Statistics.get().boxGenerated();
         }
         count = mBoxes.size();
 

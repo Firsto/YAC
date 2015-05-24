@@ -33,6 +33,7 @@ public class GameActivity extends SingleFragmentActivity {
     GameFragment mGameFragment;
     SurfaceFragment mSurfaceFragment;
     AchievementGridFragment mAchievementGridFragment;
+    StatisticsFragment mStatisticsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +97,22 @@ public class GameActivity extends SingleFragmentActivity {
                 ft.commit();
             }
         });
+
+        mStatsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ft = getSupportFragmentManager().beginTransaction();
+                if (isShow) {
+                    ft.replace(R.id.fragmentContainer, statisticsFragment());
+                    isShow = !isShow;
+                } else {
+                    ft.replace(R.id.fragmentContainer, createFragment());
+                    isShow = !isShow;
+                }
+                ft.commit();
+            }
+        });
+
     }
 
 //    @Override
@@ -142,6 +159,13 @@ public class GameActivity extends SingleFragmentActivity {
             mAchievementGridFragment = new AchievementGridFragment();
         }
         return mAchievementGridFragment;
+    }
+
+    protected Fragment statisticsFragment() {
+        if (mStatisticsFragment == null) {
+            mStatisticsFragment = new StatisticsFragment();
+        }
+        return mStatisticsFragment;
     }
 
     class GameTask extends AsyncTask<Void,Void,Void> {
