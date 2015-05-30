@@ -25,8 +25,21 @@ public class Game {
         return sGame;
     }
 
+    public Game newGame(boolean newgame) {
+        if (newgame) {
+            ItemPool.get().newItemPool();
+            Statistics.get().newStatistics();
+            sGame = null;
+        }
+        return get();
+    }
+
     public long getResources() {
         return resources;
+    }
+
+    public long getStartgame() {
+        return startgame;
     }
 
     public void addResources(long inc) {

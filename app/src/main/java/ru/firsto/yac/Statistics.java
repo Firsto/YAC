@@ -35,6 +35,10 @@ public class Statistics {
         return sStatistics;
     }
 
+    public void newStatistics() {
+        sStatistics = null;
+    }
+
     public void init() {
         gametime = Game.get().getGametime();
         items = ItemPool.get().availableItems().size();

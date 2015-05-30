@@ -13,6 +13,7 @@ import android.widget.Toast;
 import java.util.concurrent.TimeUnit;
 
 import ru.firsto.yac.Util.Notation;
+import ru.firsto.yac.Util.Saver;
 
 /**
  * Created by razor on 16.04.15.
@@ -45,7 +46,11 @@ public class GameActivity extends SingleFragmentActivity {
         mShopButton = (Button) findViewById(R.id.shop_button);
         mStatsButton = (Button) findViewById(R.id.stats_button);
 
-        mGame = Game.get();
+//        boolean newgame = getIntent().getBooleanExtra("NEW GAME", false);
+//        Toast.makeText(this, "new game " + newgame, Toast.LENGTH_SHORT).show();
+
+//        mGame = Game.get();
+        mGame = Game.get().newGame(getIntent().getBooleanExtra("NEW GAME", false));
 
         gameTask = new GameTask();
         gameTask.execute();
@@ -128,7 +133,8 @@ public class GameActivity extends SingleFragmentActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Toast.makeText(this,"onDestroy",Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this,"onDestroy",Toast.LENGTH_SHORT).show();
+        saveGame();
         gameTask.cancel(true);
     }
 
@@ -163,6 +169,11 @@ public class GameActivity extends SingleFragmentActivity {
             mStatisticsFragment = new StatisticsFragment();
         }
         return mStatisticsFragment;
+    }
+
+    protected void saveGame() {
+        Saver.save(getApplicationContext(), Game.get().getResources(), Game.get().getStartgame(), ItemPool.get().getLevels(), Statistics.get().statistics());
+        Toast.makeText(this, "Game Saved", Toast.LENGTH_SHORT).show();
     }
 
     class GameTask extends AsyncTask<Void,Void,Void> {

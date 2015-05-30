@@ -42,6 +42,10 @@ public class ItemPool {
         return sItemPool;
     }
 
+    public void newItemPool() {
+        sItemPool = null;
+    }
+
     public ArrayList<Item> allItems() {
         return mItems;
     }

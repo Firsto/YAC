@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">Yet Another Clicker</string>
 
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="dummy_button">New Game</string>
+    <string name="dummy_content">YET\nANOTHER\nCLICKER</string>
+    <string name="new_game">New Game</string>
+    <string name="continue_game">Continue</string>
+    <string name="save_game">Save</string>
+    <string name="title_activity_main_menu">MainMenuActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 </resources>
