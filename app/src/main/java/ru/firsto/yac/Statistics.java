@@ -35,7 +35,7 @@ public class Statistics {
         return sStatistics;
     }
 
-    public void newStatistics() {
+    public static void newStatistics() {
         sStatistics = null;
     }
 

@@ -17,17 +17,17 @@ public class Saver {
     public static final String PREF_RESOURSES = "yac_resourses";
     public static final String PREF_STARTGAME = "yac_startgame";
     public static final String[] PREF_LEVELS = {
-            "pref_level_abacus",
-            "pref_level_arithmometer",
-            "pref_level_calculator",
-            "pref_level_microcircuit",
-            "pref_level_CPU",
-            "pref_level_desktop",
-            "pref_level_workstation",
-            "pref_level_server",
-            "pref_level_mainframe",
-            "pref_level_supercomputer",
-            "pref_level_AI"
+            "yac_level_abacus",
+            "yac_level_arithmometer",
+            "yac_level_calculator",
+            "yac_level_microcircuit",
+            "yac_level_CPU",
+            "yac_level_desktop",
+            "yac_level_workstation",
+            "yac_level_server",
+            "yac_level_mainframe",
+            "yac_level_supercomputer",
+            "yac_level_AI"
     };
     public static final String PREF_STATS = "yac_stats";
 

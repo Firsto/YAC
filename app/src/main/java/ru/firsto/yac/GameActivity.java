@@ -50,7 +50,7 @@ public class GameActivity extends SingleFragmentActivity {
 //        Toast.makeText(this, "new game " + newgame, Toast.LENGTH_SHORT).show();
 
 //        mGame = Game.get();
-        mGame = Game.get().newGame(getIntent().getBooleanExtra("NEW GAME", false));
+        mGame = Game.newGame(getIntent().getBooleanExtra("NEW GAME", false));
 
         gameTask = new GameTask();
         gameTask.execute();

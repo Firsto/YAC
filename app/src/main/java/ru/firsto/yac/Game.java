@@ -25,10 +25,10 @@ public class Game {
         return sGame;
     }
 
-    public Game newGame(boolean newgame) {
+    public static Game newGame(boolean newgame) {
         if (newgame) {
-            ItemPool.get().newItemPool();
-            Statistics.get().newStatistics();
+            ItemPool.newItemPool();
+            Statistics.newStatistics();
             sGame = null;
         }
         return get();

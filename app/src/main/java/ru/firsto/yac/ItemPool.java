@@ -42,7 +42,7 @@ public class ItemPool {
         return sItemPool;
     }
 
-    public void newItemPool() {
+    public static void newItemPool() {
         sItemPool = null;
     }
 
@@ -87,7 +87,7 @@ public class ItemPool {
     }
     public void initItems(int[] levels) {
         for (int i = 1; i <= levels.length; i++) {
-            for (int j = 0; j < levels[i-1]; j++) {
+            while(item(i).getLevel() != levels[i-1]) {
                 item(i).levelUp();
             }
         }
